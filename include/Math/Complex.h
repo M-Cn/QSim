@@ -11,34 +11,59 @@ typedef struct Complex
     double m_im;
 } Complex;
 
-// Creates a complex number with re as real part, and im as imaginary part
+/// @brief Creates a complex number
+/// @param re The real part
+/// @param im The imaginary part
+/// @return The complex number
 Complex CreateComplex(const double re, const double im);
 
-// Returns the sum between two Complex
+/// @brief Adds two complex numbers
+/// @param in1 The first complex number
+/// @param in2 The second complex number
+/// @return The result of the addition
 Complex ComplexAdd(const Complex in1, const Complex in2);
 
-// Returns the subtraction between two Complex
+/// @brief Subtracts two complex numbers
+/// @param in1 The first complex number
+/// @param in2 The second complex number
+/// @return The result of the subtraction
 Complex ComplexSubtract(const Complex in1, const Complex in2);
 
-// Returns the multiplication between two Complex
+/// @brief Multiplies two complex numbers
+/// @param in1 The first complex number
+/// @param in2 The second complex number
+/// @return The result of the multiplication
 Complex ComplexMultiply(const Complex in1, const Complex in2);
 
-// Returns the division between two Complex
+/// @brief Divides two complex numbers
+/// @param in1 The first complex number
+/// @param in2 The second complex number
+/// @return The result of the division
 Complex ComplexDivide(const Complex in1, const Complex in2);
 
-// Returns the complex conjugate of the input Complex
+/// @brief Returns the complex conjugate of the input complex number
+/// @param in The complex number to conjugate
+/// @return The input's complex conjugate
 Complex ComplexConjugate(const Complex in);
 
-// Returns the magnitude of a Complex
+/// @brief Returns the magnitude of the input complex number
+/// @param in The complex number of which to compute the magnitude
+/// @return The input's magnitude
 double ComplexMagnitude(const Complex in);
 
-// Returns the arguments of the input Complex
+/// @brief Returns the argument of the complex number
+/// @param in The complex number of which to compute the argument
+/// @return The input's argument
 double ComplexArgument(const Complex in);
 
-// Returns true if the two input Complex are identical. False otherwise
+/// @brief Returns true if the two complex numbers are identical
+/// @param in1 The first complex number
+/// @param in2 The second complex number
+/// @return Whether or not the inputs are identical
 bool ComplexIsEqualTo(const Complex in1, const Complex in2);
 
-// Prints the complex number
+/// @brief Prints the input complex number to terminal
+/// @param in The number to print
 void ComplexPrint(const Complex in);
 
 #endif
