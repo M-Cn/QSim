@@ -20,7 +20,6 @@
 typedef enum MenuStep
 {
     kBoot,
-    kAutoTest,
     kMain,
     kMenuStepNum
 } MenuStep;
@@ -31,29 +30,26 @@ int g_menuStep;
 void BootMenuUpdate()
 {
     printf("Boot menu:\n");
-    printf("\t1) AutoTest\n");
-    printf("\t2) Main\n");
+    printf("\t1) Main\n");
+    printf("\tc) Clear\n");
     printf("\tq) Exit\n");
 
+read_input:
     switch (getchar())
     {
         case '1':
-            g_menuStep = kAutoTest;
-            break;
-        case '2':
             g_menuStep = kMain;
+            break;
+        case 'c':
+            system("clear");
             break;
         case 'q':
             g_bDone = true;
             break;
+        default:
+            goto read_input;
+            break;
     }
-}
-
-void AutoTestUpdate()
-{
-    printf("autotest exited with code %d\n", system("./autotest"));
-
-    g_menuStep = kBoot;
 }
 
 void MainUpdate()
@@ -82,7 +78,7 @@ void MainUpdate()
     ComplexMatrixSetElement(&Y, 1, 0, CreateComplex(0, 1));
     ComplexMatrixSetElement(&Y, 1, 1, CreateComplex(0, 0));
 
-    PRINT_QUANTUM_STATE_NAMED("initState", initState);
+    PRINT_QUANTUM_STATE_NAMED("Initial State", initState);
     PRINT_QUANTUM_GATE_NAMED("X", X);
     PRINT_QUANTUM_GATE_NAMED("I", I);
     PRINT_QUANTUM_GATE_NAMED("Y", Y);
@@ -93,18 +89,17 @@ void MainUpdate()
 
     QuantumState finalState = state;
 
-    PRINT_QUANTUM_STATE_NAMED("finalState", finalState);
+    PRINT_QUANTUM_STATE_NAMED("Final State", finalState);
 
     g_menuStep = kBoot;
 }
 
-// Generic signature for the main update functions
+// Generic signature for the update functions
 typedef void (*UpdateFn)();
 
 UpdateFn g_updateFunctions[] = {
-    BootMenuUpdate, // 0
-    AutoTestUpdate, // 1
-    MainUpdate      // 2
+    BootMenuUpdate,
+    MainUpdate
 };
 
 int main(int argc, char** argv)
