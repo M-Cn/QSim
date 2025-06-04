@@ -104,7 +104,7 @@ typedef void (*UpdateFn)();
 UpdateFn g_updateFunctions[] = {
     BootMenuUpdate, // 0
     AutoTestUpdate, // 1
-    MainUpdate // 2
+    MainUpdate      // 2
 };
 
 int main(int argc, char** argv)
