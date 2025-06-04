@@ -31,7 +31,7 @@ void BootMenuUpdate()
 {
     printf("Boot menu:\n");
     printf("\t1) Main\n");
-    printf("\tc) Clear\n");
+    printf("\tc) Clear Terminal\n");
     printf("\tq) Exit\n");
 
 read_input:
