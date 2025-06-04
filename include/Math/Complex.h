@@ -38,4 +38,7 @@ double ComplexArgument(const Complex in);
 // Returns true if the two input Complex are identical. False otherwise
 bool ComplexIsEqualTo(const Complex in1, const Complex in2);
 
+// Prints the complex number
+void ComplexPrint(const Complex in);
+
 #endif

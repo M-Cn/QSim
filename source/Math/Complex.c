@@ -75,3 +75,8 @@ bool ComplexIsEqualTo(const Complex in1, const Complex in2)
 
     return false;
 }
+
+void ComplexPrint(const Complex in)
+{
+    printf("(%.3lf + %.3lfi)", in.m_re, in.m_im);
+}

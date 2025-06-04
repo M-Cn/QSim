@@ -94,3 +94,21 @@ ComplexMatrix ComplexMatrixMultiply(const ComplexMatrix in1, const ComplexMatrix
 
     return result;
 }
+
+void ComplexMatrixPrint(const ComplexMatrix in)
+{
+    const size_t size = in.m_size;
+
+    for (size_t row = 0; row < size; row++)
+    {
+        printf("[\n");
+
+        for (size_t col = 0; col < size; col++)
+        {
+            ComplexPrint(ComplexMatrixGetElement(&in, row, col));
+            printf("\t");
+        }
+        
+        printf("]\n");
+    }
+}

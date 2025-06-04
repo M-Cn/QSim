@@ -31,4 +31,7 @@ ComplexMatrix ComplexMatrixDot(const ComplexMatrix in, const Complex complex);
 // Multiplies the matrix by another matrix
 ComplexMatrix ComplexMatrixMultiply(const ComplexMatrix in1, const ComplexMatrix in2);
 
+// Prints the input complex matrix
+void ComplexMatrixPrint(const ComplexMatrix in);
+
 #endif

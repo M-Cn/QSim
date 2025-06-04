@@ -44,4 +44,7 @@ double ComplexVectorMagnitude(const ComplexVector in);
 // Transforms the input complex vector by the input complex matrix
 ComplexVector ComplexVectorTransform(ComplexVector in, ComplexMatrix transform);
 
+// Print the complex vector
+void ComplexVectorPrint(const ComplexVector in);
+
 #endif

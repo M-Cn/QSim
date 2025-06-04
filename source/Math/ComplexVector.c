@@ -158,3 +158,16 @@ ComplexVector ComplexVectorTransform(ComplexVector in, ComplexMatrix transform)
 
     return result;
 }
+
+void ComplexVectorPrint(const ComplexVector in)
+{
+    printf("[\n");
+
+    for (size_t i = 0; i < in.m_size; i++)
+    {
+        ComplexPrint(ComplexVectorGetElement(&in, i));
+        printf("\n");
+    }
+    
+    printf("]\n");
+}
