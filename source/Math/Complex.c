@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <math.h>
 #include "../../include/Math/Complex.h"
 #include "../../include/Math/ComplexMatrix.h"

@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "../../include/Math/ComplexMatrix.h"
 #include "../../include/Math/Complex.h"
 #include "../../include/Error.h"
@@ -101,14 +102,14 @@ void ComplexMatrixPrint(const ComplexMatrix in)
 
     for (size_t row = 0; row < size; row++)
     {
-        printf("[\n");
-
+        printf("[");
         for (size_t col = 0; col < size; col++)
-        {
-            ComplexPrint(ComplexMatrixGetElement(&in, row, col));
-            printf("\t");
+        {            
+            ComplexPrint(ComplexMatrixGetElement(&in, col, row));
+            
+            if (col < size - 1) printf("\t");
         }
-        
+
         printf("]\n");
     }
 }

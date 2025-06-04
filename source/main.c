@@ -8,16 +8,18 @@
 #define NUM_QBITS 1
 
 #define PRINT_QUANTUM_GATE_NAMED(name, gate) \
-    printf(name); \
-    ComplexMatrixPrint(gate);
+    printf("%s:\n", name); \
+    ComplexMatrixPrint(gate); \
+    printf("\n");
 
 #define PRINT_QUANTUM_STATE_NAMED(name, gate) \
-    printf(name); \
-    ComplexVectorPrint(gate);
+    printf("%s:\n", name); \
+    ComplexVectorPrint(gate); \
+    printf("\n");
 
 typedef enum MenuStep
 {
-    kBootMenu,
+    kBoot,
     kAutoTest,
     kMain,
     kMenuStepNum
@@ -51,7 +53,7 @@ void AutoTestUpdate()
 {
     printf("autotest exited with code %d\n", system("./autotest"));
 
-    g_menuStep = kBootMenu;
+    g_menuStep = kBoot;
 }
 
 void MainUpdate()
@@ -92,6 +94,8 @@ void MainUpdate()
     QuantumState finalState = state;
 
     PRINT_QUANTUM_STATE_NAMED("finalState", finalState);
+
+    g_menuStep = kBoot;
 }
 
 // Generic signature for the main update functions
@@ -106,7 +110,7 @@ UpdateFn g_updateFunctions[] = {
 int main(int argc, char** argv)
 {
     g_bDone = false;
-    g_menuStep = kBootMenu;
+    g_menuStep = kBoot;
 
     while (!g_bDone)
     {

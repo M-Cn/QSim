@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <math.h>
 #include "../../include/Error.h"
 #include "../../include/Math/ComplexVector.h"
@@ -161,13 +162,10 @@ ComplexVector ComplexVectorTransform(ComplexVector in, ComplexMatrix transform)
 
 void ComplexVectorPrint(const ComplexVector in)
 {
-    printf("[\n");
-
     for (size_t i = 0; i < in.m_size; i++)
     {
+        printf("[");
         ComplexPrint(ComplexVectorGetElement(&in, i));
-        printf("\n");
+        printf("]\n");
     }
-    
-    printf("]\n");
 }
