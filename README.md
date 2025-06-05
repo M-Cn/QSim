@@ -76,11 +76,6 @@ bin/qsim
 ```
 
 You will be presented with an interactive menu with the following actions:
-
-```
-1 — Run the simulation. This will display the circuit's initial and final quantum states.
-
-c — Clear the console screen.
-
-q — Quit the program.
-```
+* Press `1` to run the simulation. This will display the circuit's initial and final quantum states.
+* Press `c` to clear the console screen.
+* Press `q` to quit the program.
