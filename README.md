@@ -34,6 +34,8 @@ The `source` directory respects the same structure as the `include` directory. E
 
 The two extra files `main.c` and `autotest.c` contain the entry point of `qsim` and `autotest`, respecitvely.
 
+`Makefile` build targets for make.
+
 ## Building
 Run either `make all_release` or `make all_debug` in the terminal, depending on the configuration you wish to use.
 
