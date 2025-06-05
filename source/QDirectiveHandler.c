@@ -58,7 +58,7 @@ void SplitVectorStringList(const char* input, char tokenList[][TOKEN_LEN])
     char* token = strtok(buffer, ", "); 
     int currentTokenIdx = 0;
 
-    // Parse each individual token
+    // Recursively parse tokens. Splits strings either at commas or whitespaces
     while (token != NULL)
     {
         strncpy(tokenList[currentTokenIdx], token, TOKEN_LEN - 1);
@@ -81,6 +81,7 @@ void SplitVectorString(const char* input, char parts[][TOKEN_LEN], int* count)
     int offset = 0;
     char token[TOKEN_LEN];
 
+    // Recursively parse tokens. Parse everything that's not a ','
     while (sscanf(p, " %[^,]%n", token, &offset) == 1) 
     {
         strncpy(parts[*count], token, TOKEN_LEN - 1);
@@ -88,7 +89,8 @@ void SplitVectorString(const char* input, char parts[][TOKEN_LEN], int* count)
 
         (*count)++;
         p += offset;
-
+        
+        // If we find a comma, we skip ahead
         if (*p == ',') p++;
         else break;
     }
@@ -109,6 +111,7 @@ void SplitMatrixString(const char* input, char tokenList[][TOKEN_LEN])
     int numChrRead = 0;
     int currentTokenIdx = 0;
 
+    // Recursively parse tokens. Parse everything that's not a whitespace ' '
     while (sscanf(buffer, "%[^ ] %n", tmp, &numChrRead) != EOF)
     {
         RemoveVectorDelimiter(tmp);
@@ -135,7 +138,7 @@ void SplitCircuitString(const char* input, char tokenList[][TOKEN_LEN], int* pNu
     
     char* token = strtok(buffer, " "); 
 
-    // Parse each individual token
+    // Recursively parse tokens. Splits strings at whitespaces
     while (token != NULL)
     {
         strncpy(tokenList[*pNumGates], token, TOKEN_LEN - 1);
