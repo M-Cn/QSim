@@ -237,7 +237,7 @@ void HandleDirective(QSim* pQSim, QDirective directive)
 
     if (directive.m_type < kDirTypeNum) return g_directiveHandlers[directive.m_type](pQSim, directive);
     
-    THROW_ERROR("Unhandled directive type");
+    THROW_ERROR("Unhandled directive type %d\n", directive.m_type);
 }
 
 void HandleNoneDirective(QSim* pQSim, QDirective directive)
