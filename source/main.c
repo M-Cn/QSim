@@ -1,6 +1,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "../include/Error.h"
+#include "../include/Properties/Properties.h"
 #include "../include/QuantumState.h"
 #include "../include/QuantumGate.h"
 #include "../include/Math/Complex.h"
@@ -54,6 +56,14 @@ read_input:
 
 void MainUpdate()
 {
+    Properties inputProp = CreateProperties("input/init.txt");
+    //Properties circProp = CreateProperties("input/circ.txt");
+
+    const int numQBits = GetPropertyInt(&inputProp, "#qbits");
+
+    printf("numQBits=%d\n", numQBits);
+
+    /*
     const int size = 1 << NUM_QBITS; // 2 ^ NUM_QBITS
 
     QuantumState initState = CreateComplexVector(size);
@@ -90,6 +100,7 @@ void MainUpdate()
     QuantumState finalState = state;
 
     PRINT_QUANTUM_STATE_NAMED("Final State", finalState);
+    */
 
     g_menuStep = kBoot;
 }
@@ -111,6 +122,7 @@ int main(int argc, char** argv)
     {
         if (g_menuStep < kMenuStepNum)
             g_updateFunctions[g_menuStep]();
+        else PANIC("Invalid menu step %d\n", g_menuStep);
     }
 
     return 0;

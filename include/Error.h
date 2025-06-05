@@ -1,4 +1,8 @@
+#ifndef ERROR_H
+#define ERROR_H
+
 #include <stdio.h>
+#include <stdbool.h>
 #include <assert.h>
 
 #define PRINT_SUCCESS(fmt, ...) printf("\033[32m" fmt "\033[0m", ##__VA_ARGS__)
@@ -16,3 +20,5 @@
             assert(cond); \
         } \
     } while(false);
+
+#endif

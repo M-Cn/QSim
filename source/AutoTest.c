@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "../include/utils.h"
 #include "../include/Error.h"
+#include "../include/Properties/Property.h"
 #include "../include/Math/Complex.h"
 #include "../include/Math/ComplexVector.h"
 #include "../include/Math/ComplexMatrix.h"
@@ -413,6 +414,47 @@ void test_ComplexMatrixMultiply()
     PRINT_SUCCESS("ComplexMatrixMultiply test passed!\n");
 }
 
+void test_GetPropertyInt()
+{
+    Property prop = {"#qbits", "1"};
+    int numQbits = GetPropertyValueAsInt(&prop);
+
+    NOTIFY_TEST_FAIL(numQbits == 1, "GetPropertyInt test failed\n");
+
+    PRINT_SUCCESS("GetPropertyInt test passed!\n");
+}
+
+void test_GetPropertyQuantumState()
+{
+    Property prop = {"#init", "[0.5+0.5i, 0.5-0.5i]"};
+
+    int numQBits = 1;
+    QuantumState state = GetPropertyValueAsQuantumState(&prop, numQBits);
+
+    NOTIFY_TEST_FAIL(ComplexIsEqualTo(ComplexVectorGetElement(&state, 0), CreateComplex(0.5f, 0.5f)), "GetPropertyQuantumGate test failed at 0");
+    NOTIFY_TEST_FAIL(ComplexIsEqualTo(ComplexVectorGetElement(&state, 1), CreateComplex(0.5f, -0.5f)), "GetPropertyQuantumGate test failed at 1");
+
+    PRINT_SUCCESS("GetPropertyQuantumState test passed!\n");
+
+    ComplexVectorFree(&state);
+}
+
+void test_GetPropertyQuantumGate()
+{
+    Property prop = {"#init", "X [(0, 1) (1, 0)]"};
+
+    int numQBits = 1;
+    QuantumGate gate = GetPropertyValueAsQuantumGate(&prop, numQBits);
+
+    NOTIFY_TEST_FAIL(ComplexIsEqualTo(ComplexMatrixGetElement(&gate, 0, 0), CreateComplex(0, 0)), "GetPropertyQuantumState test failed at (0,0)");
+    NOTIFY_TEST_FAIL(ComplexIsEqualTo(ComplexMatrixGetElement(&gate, 0, 1), CreateComplex(1, 0)), "GetPropertyQuantumState test failed at (0,1)");
+    NOTIFY_TEST_FAIL(ComplexIsEqualTo(ComplexMatrixGetElement(&gate, 1, 0), CreateComplex(1, 0)), "GetPropertyQuantumState test failed at (1,0)");
+    NOTIFY_TEST_FAIL(ComplexIsEqualTo(ComplexMatrixGetElement(&gate, 1, 1), CreateComplex(0, 0)), "GetPropertyQuantumState test failed at (1,1)");
+
+    PRINT_SUCCESS("GetPropertyQuantumState test passed!\n");
+
+    ComplexMatrixFree(&gate);
+}
 
 int main() 
 {
@@ -445,6 +487,11 @@ int main()
     test_SetGetComplexMatrixElement();
     test_ComplexMatrixDot();
     test_ComplexMatrixMultiply();
+
+    printf("--------Property tests--------\n");
+    test_GetPropertyInt();
+    test_GetPropertyQuantumState();
+    test_GetPropertyQuantumGate();
 
     return 0;
 }
