@@ -71,7 +71,8 @@ To execute the main simulator, run:
 bin/qsim
 ```
 
-You will be presented with an interactive menu with the following actions:
+You will be asked for valid input file paths, and then be presented with an interactive menu with the following actions:
 * Press `1` to run the simulation. This will display the circuit's initial and final quantum states.
+* Press `2` to set input config filepaths.
 * Press `c` to clear the console screen.
 * Press `q` to quit the program.
