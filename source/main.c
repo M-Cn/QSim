@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/Debug.h"
+#include "../include/QSim.h"
 #include "../include/QuantumState.h"
 #include "../include/QuantumGate.h"
 #include "../include/Math/Complex.h"
@@ -55,6 +56,14 @@ read_input:
 
 void MainUpdate()
 {
+    QSim qsim = CreateQSim("input/init.txt", "input/circ.txt");
+
+    PRINT_QUANTUM_STATE_NAMED("Initial State", qsim.m_initialState);
+
+    RunQSim(&qsim);
+
+    PRINT_QUANTUM_STATE_NAMED("Final State", qsim.m_finalState);
+
     /*
     const int size = 1 << NUM_QBITS; // 2 ^ NUM_QBITS
 

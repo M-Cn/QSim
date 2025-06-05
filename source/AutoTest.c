@@ -420,6 +420,11 @@ void test_CreateQSim()
 
     NOTIFY_TEST_FAIL(qsim.m_numQBits == 1, "CreateQSim test failed. numQbits mismatch.");
     NOTIFY_TEST_FAIL(qsim.m_numGates == 3, "CreateQSim test failed. numGates mismatch.");
+    NOTIFY_TEST_FAIL(ComplexIsEqualTo(ComplexVectorGetElement(&qsim.m_initialState, 0), CreateComplex(0.5f, 0.5f)), "CreateQSim test failed. initialState mismatch.");
+    NOTIFY_TEST_FAIL(qsim.m_circuitDef.m_numGates == 3, "CreateQSim test failed. circuitDef.numGates mismatch.");
+    NOTIFY_TEST_FAIL(qsim.m_circuitDef.m_gateIDs[0] == 2, "CreateQSim test failed. circuitDef.gateID mismatch at index 0.");
+    NOTIFY_TEST_FAIL(qsim.m_circuitDef.m_gateIDs[1] == 0, "CreateQSim test failed. circuitDef.gateID mismatch at index 0.");
+    NOTIFY_TEST_FAIL(qsim.m_circuitDef.m_gateIDs[2] == 1, "CreateQSim test failed. circuitDef.gateID mismatch at index 0.");
 
     PRINT_SUCCESS("CreateQSim test passed!\n");
 }

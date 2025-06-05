@@ -113,11 +113,11 @@ Complex GetComplexFromString(const char* str)
 {
     Complex num = CreateComplex(0, 0);
 
-    if (sscanf(str, "%lf+%lfi", &num.m_re, &num.m_im) == 2) 
+    if (sscanf(str, "%lf+i%lf", &num.m_re, &num.m_im) == 2) 
     {
         return num;
     }
-    else if (sscanf(str, "%lf-%lfi", &num.m_re, &num.m_im) == 2) 
+    else if (sscanf(str, "%lf-i%lf", &num.m_re, &num.m_im) == 2) 
     {
         num.m_im = -num.m_im;
         return num;
@@ -127,7 +127,7 @@ Complex GetComplexFromString(const char* str)
         num.m_im = 0.0;
         return num;
     }
-    else if (sscanf(str, "%lfi", &num.m_im) == 1) 
+    else if (sscanf(str, "i%lf", &num.m_im) == 1) 
     {
         num.m_re = 0.0;
         return num;
@@ -148,7 +148,7 @@ Complex GetComplexFromString(const char* str)
     return num;
 }
 
-QuantumState GetQuantumStateFromDirective(QDirective* self, const int numQBits)
+QuantumState GetQuantumStateFromDirective(const QDirective* self, const int numQBits)
 {
     const int size = 1 << numQBits;
     QuantumState state = CreateComplexVector(size);
@@ -160,9 +160,6 @@ QuantumState GetQuantumStateFromDirective(QDirective* self, const int numQBits)
     {        
         Complex num = GetComplexFromString(tokenList[i]);
 
-    #ifdef _DEBUG
-        ComplexPrint(num);
-    #endif
         ComplexVectorSetElement(&state, i, num);
     }
     
@@ -188,9 +185,6 @@ void GetQuantumGateDefFromDirective(const QDirective* self, QuantumGate* pQuantu
         {
             Complex num = GetComplexFromString(tokenList[listIdx++]);
             
-        #ifdef _DEBUG
-            ComplexPrint(num);
-        #endif
             ComplexMatrixSetElement(&gate, row, col, num);
         }     
     }
@@ -206,9 +200,13 @@ QuantumCircuitDef GetCircuitDefFromDirective(const QDirective* self, QSim* pQSim
 
     for (size_t i = 0; i < circuitDef.m_numGates; i++)
     {
-        const QuantumGate* pGate = GetGateByName(pQSim, tokenList[i]);
+        const int gateID = GetGateIDByName(pQSim, tokenList[i]);
 
-        if (pGate != NULL) circuitDef.m_gates[i] = *pGate;
+        if (gateID == -1) THROW_ERROR("Gate %s not found.\n", tokenList[i]);
+
+        circuitDef.m_gateIDs[i] = gateID;
+
+        DEBUG_OUTPUT("circuitDef.gateIDs[%zu]=%d\n", i, gateID);
     }
     
     return circuitDef;

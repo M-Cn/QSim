@@ -22,6 +22,10 @@ typedef struct QSim
 
 QSim CreateQSim(const char* initStateFilename, const char* circFileName);
 
+void RunQSim(QSim* self);
+
 const QuantumGate* GetGateByName(const QSim* self, const char* name);
+
+const int GetGateIDByName(const QSim* self, const char* name);
 
 #endif

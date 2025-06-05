@@ -31,10 +31,22 @@ QSim CreateQSim(const char* initStateFilename, const char* circFileName)
     return qsim;
 }
 
+void RunQSim(QSim* self)
+{    
+}
+
 const QuantumGate* GetGateByName(const QSim* self, const char* name)
 {
     for (size_t i = 0; i < self->m_numGates; i++)
         if (strcmp(self->m_gateNames[i], name) == 0) return &self->m_gateList[i];
 
     return NULL;
+}
+
+const int GetGateIDByName(const QSim* self, const char* name)
+{
+    for (size_t i = 0; i < self->m_numGates; i++)
+        if (strcmp(self->m_gateNames[i], name) == 0) return i;
+
+    return -1;
 }
