@@ -84,8 +84,7 @@ int main(int argc, char** argv)
 
     while (!g_bDone)
     {
-        if (g_menuStep < kMenuStepNum)
-            g_updateFunctions[g_menuStep]();
+        if (g_menuStep < kMenuStepNum) g_updateFunctions[g_menuStep]();
         else PANIC("Invalid menu step %d\n", g_menuStep);
     }
 

@@ -235,8 +235,7 @@ void HandleDirective(QSim* pQSim, QDirective directive)
 {
     DEBUG_OUTPUT("Handling QDirective=(%s, %s)\n", GetDirTypeName(directive.m_type), directive.m_value);
 
-    if (directive.m_type < kDirTypeNum)
-        return g_directiveHandlers[directive.m_type](pQSim, directive);
+    if (directive.m_type < kDirTypeNum) return g_directiveHandlers[directive.m_type](pQSim, directive);
     
     THROW_ERROR("Unhandled directive type");
 }
