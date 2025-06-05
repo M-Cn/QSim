@@ -12,37 +12,65 @@ typedef struct ComplexVector
     Complex* m_data;
 } ComplexVector;
 
-// Creates a complex vector and initializes to (0 + 0i). REMEMBER TO CALL ComplexVectorFree AFTERWARDS!
+
+/// @brief Creates a zero complex vector of the specified size. Remember to free the memory by calling ComplexVectorFree when done using it.
+/// @param size The desired size (dimension).
+/// @return The created vector.
 ComplexVector CreateComplexVector(const size_t size);
 
-// Destructor
+/// @brief Frees memory allocated by CreateComplexVector.
+/// @param self The complex vector object to free.
 void ComplexVectorFree(ComplexVector* self);
 
-// Set the element at idx
+/// @brief Sets the value of the specified complex coordinate in the input vector.
+/// @param self The input vector.
+/// @param idx The index of the coordinate to set.
+/// @param value The new coordinate's value.
 void ComplexVectorSetElement(const ComplexVector* self, const size_t idx, const Complex value);
 
-// Get the element at idx
+/// @brief Returns the value of the specified complex coordinate in the input vector.
+/// @param self The input vector.
+/// @param idx The index of the coordinate to get.
+/// @return The coordinate's value.
 Complex ComplexVectorGetElement(const ComplexVector* self, const size_t idx);
 
-// Adds two complex vectors
+/// @brief Adds two complex vectors together.
+/// @param in1 The first input vector.
+/// @param in2 The second input vector.
+/// @return The operation's result.
 ComplexVector ComplexVectorAdd(const ComplexVector in1, const ComplexVector in2);
 
-// Subtracts two complex vectors
+/// @brief Subtracts two complex vectors.
+/// @param in1 The first input vector.
+/// @param in2 The second input vector.
+/// @return The operation's result.
 ComplexVector ComplexVectorSubtract(const ComplexVector in1, const ComplexVector in2);
 
-// Scalarly multiplies a complex vector by a complex scalar
+/// @brief Computes the scalar product between a vector and a complex number.
+/// @param in The input vector.
+/// @param scalar The input scalar.
+/// @return The operation's result.
 ComplexVector ComplexVectorScalarMultiply(const ComplexVector in, const Complex scalar);
 
-// Calculates the inner product of two complex vectors
+/// @brief Computes the inner (cross) product between two vectors.
+/// @param in1 The first input vector.
+/// @param in2 The second input vector.
+/// @return The operation's result.
 Complex ComplexVectorDotProduct(const ComplexVector in1, const ComplexVector in2);
 
-// Calculates the magnitude of the input complex vector
+/// @brief Computes the magnitude of the input vector.
+/// @param in The input vector.
+/// @return The operation's result.
 double ComplexVectorMagnitude(const ComplexVector in);
 
-// Transforms the input complex vector by the input complex matrix
+/// @brief Transforms the input vector by the input matrix.
+/// @param in The input vector.
+/// @param transform The input matrix.
+/// @return The transformed vector.
 ComplexVector ComplexVectorTransform(ComplexVector in, ComplexMatrix transform);
 
-// Print the complex vector
+/// @brief Prints the input vector to screen.
+/// @param in The input vector.
 void ComplexVectorPrint(const ComplexVector in);
 
 #endif

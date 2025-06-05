@@ -423,9 +423,9 @@ void test_CreateQSim()
     NOTIFY_TEST_FAIL(ComplexIsEqualTo(ComplexVectorGetElement(&qsim.m_initialState, 0), CreateComplex(0.5f, 0.5f)), "CreateQSim test failed. initialState mismatch at index 0.\n");
     NOTIFY_TEST_FAIL(ComplexIsEqualTo(ComplexVectorGetElement(&qsim.m_initialState, 1), CreateComplex(0.5f, -0.5f)), "CreateQSim test failed. initialState mismatch at index 1.\n");
 
-    NOTIFY_TEST_FAIL(qsim.m_gateList[0].m_size == 2, "CreateQSim test failed. Size mismatch for Gate at index 0 (expected=%d, got=%zu)\n", 4, qsim.m_gateList[0].m_size);
-    NOTIFY_TEST_FAIL(qsim.m_gateList[1].m_size == 2, "CreateQSim test failed. Size mismatch for Gate at index 1 (expected=%d, got=%zu)\n", 4, qsim.m_gateList[1].m_size);
-    NOTIFY_TEST_FAIL(qsim.m_gateList[2].m_size == 2, "CreateQSim test failed. Size mismatch for Gate at index 2 (expected=%d, got=%zu)\n", 4, qsim.m_gateList[2].m_size);
+    NOTIFY_TEST_FAIL(qsim.m_gateList[0].m_size == 2, "CreateQSim test failed. Size mismatch for Gate at index 0 (expected=%d, got=%zu)\n", 2, qsim.m_gateList[0].m_size);
+    NOTIFY_TEST_FAIL(qsim.m_gateList[1].m_size == 2, "CreateQSim test failed. Size mismatch for Gate at index 1 (expected=%d, got=%zu)\n", 2, qsim.m_gateList[1].m_size);
+    NOTIFY_TEST_FAIL(qsim.m_gateList[2].m_size == 2, "CreateQSim test failed. Size mismatch for Gate at index 2 (expected=%d, got=%zu)\n", 2, qsim.m_gateList[2].m_size);
 
     const QuantumCircuitDef circuidDef = qsim.m_circuitDef;
 

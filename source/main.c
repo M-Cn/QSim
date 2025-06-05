@@ -72,6 +72,7 @@ void MainUpdate()
 // Generic signature for the update functions
 typedef void (*UpdateFn)();
 
+// Update functions table
 UpdateFn g_updateFunctions[] = {
     BootMenuUpdate,
     MainUpdate

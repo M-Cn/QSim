@@ -9,6 +9,7 @@
 #define ASSERT_DIR_TYPE_MISMATCH(EXPECTED, ACTUAL) \
 ASSERT_MSG(EXPECTED == ACTUAL, "Mismatching directive type! (expecting %s, got %s)\n", GetDirTypeName(EXPECTED), GetDirTypeName(ACTUAL))
 
+// Directive handler functions table.
 DirectiveHandlerFn g_directiveHandlers[] = {
     HandleNoneDirective,
     HandleNumQBitsDirective,
@@ -17,6 +18,8 @@ DirectiveHandlerFn g_directiveHandlers[] = {
     HandleCircuitDefDirective
 };
 
+/// @brief Removes the delimiting [] of the input string.
+/// @param buffer The input string.
 void RemoveInputDelimiter(char* buffer)
 {
     // Remove leading '['
@@ -29,6 +32,8 @@ void RemoveInputDelimiter(char* buffer)
         buffer[len - 1] = '\0';
 }
 
+/// @brief Removes the () delimiters in the input vector string.
+/// @param buffer The input vector string.
 void RemoveVectorDelimiter(char* buffer)
 {
     // Remove leading '('
@@ -41,7 +46,10 @@ void RemoveVectorDelimiter(char* buffer)
         buffer[len - 1] = '\0';
 }
 
-void CreateComplexVectorStrList(const char* input, char tokenList[][TOKEN_LEN])
+/// @brief Splits the input vector list string into each individual vector and stores the result in tokenList.
+/// @param input The input vector list string.
+/// @param tokenList The output vector list.
+void SplitVectorStringList(const char* input, char tokenList[][TOKEN_LEN])
 {
     char* buffer = strdup(input); //Create a writable copy of the value input for usage within strtok
     
@@ -63,8 +71,11 @@ void CreateComplexVectorStrList(const char* input, char tokenList[][TOKEN_LEN])
     free(buffer);
 }
 
-// Splits comma-separated complex numbers and registers them in parts
-void SplitCommaSeparatedComplex(const char* input, char parts[][TOKEN_LEN], int* count) 
+/// @brief Splits the input complex vector string into each individual complex number and stores the result in parts.
+/// @param input The input vector string.
+/// @param parts The output complex number list.
+/// @param count The number of previously parsed elements. Used to read the correct coordinate in the vector.
+void SplitVectorString(const char* input, char parts[][TOKEN_LEN], int* count) 
 {
     const char* p = input;
     int offset = 0;
@@ -83,7 +94,10 @@ void SplitCommaSeparatedComplex(const char* input, char parts[][TOKEN_LEN], int*
     }
 }
 
-void CreateComplexMatrixStrList(const char* input, char tokenList[][TOKEN_LEN])
+/// @brief Splits the input matrix string into each individual vector component and stores the result in tokenList.
+/// @param input The input matrix string.
+/// @param tokenList The output vector list.
+void SplitMatrixString(const char* input, char tokenList[][TOKEN_LEN])
 {
     char* buffer = strdup(input); //Create a writable copy of the value input for usage within strtok
     
@@ -105,13 +119,17 @@ void CreateComplexMatrixStrList(const char* input, char tokenList[][TOKEN_LEN])
         
         DEBUG_OUTPUT("vectorStr: %s\n", vectorStr);
 
-        SplitCommaSeparatedComplex(vectorStr, tokenList, &currentTokenIdx);
+        SplitVectorString(vectorStr, tokenList, &currentTokenIdx);
 
         buffer += numChrRead;
     }
 }
 
-void CreateCircuitStrList(const char* input, char tokenList[][TOKEN_LEN], int* pNumGates)
+/// @brief Splits the input quantum circuit string into each individual gate name.
+/// @param input The input quantim circuit definition string.
+/// @param tokenList The output list of gate names.
+/// @param pNumGates Pointer to the previously processed elements. Used to store the name in the correct position.
+void SplitCircuitString(const char* input, char tokenList[][TOKEN_LEN], int* pNumGates)
 {
     char* buffer = strdup(input); //Create a writable copy of the value input for usage within strtok
     
@@ -130,6 +148,9 @@ void CreateCircuitStrList(const char* input, char tokenList[][TOKEN_LEN], int* p
     free(buffer);
 }
 
+/// @brief Translates the input complex number string into an actual complex number.
+/// @param str The input complex string.
+/// @return The output complex number.
 Complex GetComplexFromString(const char* str)
 {
     Complex num = CreateComplex(0, 0);
@@ -165,13 +186,17 @@ Complex GetComplexFromString(const char* str)
     return num;
 }
 
+/// @brief Creates a quantum state object from the input directive.
+/// @param self The input directive.
+/// @param numQBits The number of quantum bits.
+/// @return The quantum state object.
 QuantumState GetQuantumStateFromDirective(const QDirective* self, const int numQBits)
 {
     const int size = 1 << numQBits;
     QuantumState state = CreateComplexVector(size);
 
     char tokenList[TOKEN_LEN][TOKEN_LEN];
-    CreateComplexVectorStrList(self->m_value, tokenList);
+    SplitVectorStringList(self->m_value, tokenList);
 
     for (size_t i = 0; i < size; i++)
     {        
@@ -183,6 +208,11 @@ QuantumState GetQuantumStateFromDirective(const QDirective* self, const int numQ
     return state;
 }
 
+/// @brief Creates a quantum gate object from the input directive.
+/// @param self The input directive.
+/// @param pName A pointer to where to store the gate's name.
+/// @param numQBits The number of quantum bits.
+/// @return The quantum gate object.
 QuantumGate GetQuantumGateDefFromDirective(const QDirective* self, char pName[][MAX_INPUT], const int numQBits)
 {
     const int size = 1 << numQBits;
@@ -193,7 +223,7 @@ QuantumGate GetQuantumGateDefFromDirective(const QDirective* self, char pName[][
     sscanf(self->m_value, "%s %[^\n]", *pName, elemList);
 
     char tokenList[TOKEN_LEN][TOKEN_LEN];
-    CreateComplexMatrixStrList(elemList, tokenList);
+    SplitMatrixString(elemList, tokenList);
     
     int listIdx = 0;
     for (size_t row = 0; row < size; row++)
@@ -209,13 +239,17 @@ QuantumGate GetQuantumGateDefFromDirective(const QDirective* self, char pName[][
     return gate;
 }
 
+/// @brief Creates a circuit definition object from the input directive.
+/// @param self The input directive.
+/// @param pQSim The simulation object in which the circuit exists.
+/// @return The circuit definition object.
 QuantumCircuitDef GetCircuitDefFromDirective(const QDirective* self, QSim* pQSim)
 {
     QuantumCircuitDef circuitDef;
     circuitDef.m_numGates = 0;
     
     char tokenList[TOKEN_LEN][TOKEN_LEN];
-    CreateCircuitStrList(self->m_value, tokenList, &circuitDef.m_numGates);
+    SplitCircuitString(self->m_value, tokenList, &circuitDef.m_numGates);
 
     for (size_t i = 0; i < circuitDef.m_numGates; i++)
     {

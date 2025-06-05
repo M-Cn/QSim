@@ -2,6 +2,9 @@
 #include "../include/Debug.h"
 #include "../include/QDirective.h"
 
+/// @brief Gets the DirectiveType from the input string.
+/// @param str The input string.
+/// @return The corresponding directive type.
 DirectiveType GetDirTypeFromInputString(const char* str)
 {
     if (strcmp(str, "qubits") == 0) return kDirTypeNumQBit;
