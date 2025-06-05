@@ -1,8 +1,6 @@
 #ifndef COMPLEX_MATRIX_H
 #define COMPLEX_MATRIX_H
 
-#define MAX_SIZE 100
-
 #include <stdlib.h>
 
 typedef struct Complex Complex;

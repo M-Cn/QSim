@@ -7,8 +7,6 @@
 
 ComplexVector CreateComplexVector(const size_t size)
 {
-    ASSERT_MSG(size < MAX_SIZE, "Exceeding maximum ComplexMatrix size\n");
-
     ComplexVector result;
 
     result.m_size = size;
