@@ -41,8 +41,7 @@ void ComplexMatrixSetElement(const ComplexMatrix* self, const size_t row, const 
 {
     if (self == NULL) PANIC("ComplexMatrixSetElement() failed. self was nullptr\n");
 
-    if ((row < self->m_size) && (col < self->m_size))
-        self->m_data[row][col] = value; return;
+    if ((row < self->m_size) && (col < self->m_size)) { self->m_data[row][col] = value; return; }
 
     THROW_ERROR("Attempted to set an out of bound value for ComplexMatrix (requested_row=%zu, requested_col=%zu, size=%zu)\n", row, col, self->m_size);
 }

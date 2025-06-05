@@ -35,8 +35,7 @@ void ComplexVectorSetElement(const ComplexVector* self, const size_t idx, const 
 {
     if (self == NULL) PANIC("ComplexVectorSetElement() failed. self was nullptr\n");
     
-    if (idx < self->m_size)
-        self->m_data[idx] = value; return;
+    if (idx < self->m_size) { self->m_data[idx] = value; return; }
 
     THROW_ERROR("Attempted to set an out of bound value for ComplexVector (requested=%zu, size=%zu)\n", idx, self->m_size);
 }
