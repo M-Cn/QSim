@@ -1,5 +1,5 @@
 # QSim
-Quantum bit gate simulator written in ANSI C.
+Quantum bit circuit simulator written in ANSI C.
 
 ## Project structure
 `esempi-input`: Input files used when running `autotest`.
