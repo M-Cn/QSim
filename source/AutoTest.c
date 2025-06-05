@@ -416,7 +416,7 @@ void test_ComplexMatrixMultiply()
 
 void test_CreateQSim()
 {
-    QSim qsim = CreateQSim("./esempi-input/init-ex.txt", "./esempi-input/circ-ex.txt");
+    QSim qsim = CreateQSim("esempi-input/init-ex.txt", "esempi-input/circ-ex.txt");
 
     NOTIFY_TEST_FAIL(qsim.m_numQBits == 1, "CreateQSim test failed. numQbits mismatch.\n");
     NOTIFY_TEST_FAIL(qsim.m_numGates == 3, "CreateQSim test failed. numGates mismatch.\n");

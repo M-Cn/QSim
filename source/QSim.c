@@ -38,7 +38,7 @@ void QSimFree(QSim* self)
     ComplexVectorFree(&self->m_finalState);
 
     for (size_t i = 0; i < self->m_numGates; i++)
-        ComplexMatrixFree(&self->m_gateList[i]);    
+        ComplexMatrixFree(&self->m_gateList[i]); 
 }
 
 void QSimRun(QSim* self)
@@ -53,6 +53,8 @@ void QSimRun(QSim* self)
         {
             QuantumGate gate = self->m_gateList[gateID];
 
+            DEBUG_OUTPUT("Transforming with gate %d\n", gateID);
+            
             state = ComplexVectorTransform(state, gate);
         }
     }

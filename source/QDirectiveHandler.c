@@ -105,8 +105,6 @@ void SplitMatrixString(const char* input, char tokenList[][TOKEN_LEN])
     
     RemoveInputDelimiter(buffer);
 
-    DEBUG_OUTPUT("buffer: %s\n", buffer);
-
     char tmp[256];
     int numChrRead = 0;
     int currentTokenIdx = 0;
@@ -120,8 +118,6 @@ void SplitMatrixString(const char* input, char tokenList[][TOKEN_LEN])
         strncpy(vectorStr, tmp, TOKEN_LEN - 1);
         vectorStr[TOKEN_LEN - 1] = '\0'; //Make sure it's null terminated
         
-        DEBUG_OUTPUT("vectorStr: %s\n", vectorStr);
-
         SplitVectorString(vectorStr, tokenList, &currentTokenIdx);
 
         buffer += numChrRead;
@@ -261,8 +257,6 @@ QuantumCircuitDef GetCircuitDefFromDirective(const QDirective* self, QSim* pQSim
         if (gateID == -1) THROW_ERROR("Gate %s not found.\n", tokenList[i]);
 
         circuitDef.m_gateIDs[i] = gateID;
-
-        DEBUG_OUTPUT("circuitDef.gateIDs[%zu]=%d\n", i, gateID);
     }
     
     return circuitDef;

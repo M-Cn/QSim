@@ -16,11 +16,11 @@ autotest_release:
 
 qsim_debug:
 	mkdir -p bin/
-	$(CC) $(SOURCE_FILES) source/main.c -o bin/qsim_debug $(CFLAGS_DEBUG)
+	$(CC) $(SOURCE_FILES) source/main.c -o bin/qsim $(CFLAGS_DEBUG)
 
 autotest_debug:
 	mkdir -p bin/
-	$(CC) $(SOURCE_FILES) source/AutoTest.c -o bin/autotest_debug $(CFLAGS_DEBUG)
+	$(CC) $(SOURCE_FILES) source/AutoTest.c -o bin/autotest $(CFLAGS_DEBUG)
 
 .PHONY: clean
 
