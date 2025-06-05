@@ -64,8 +64,7 @@ void MainUpdate()
 
     PRINT_QUANTUM_STATE_NAMED("Final State", qsim.m_finalState);
 
-    // Calling this makes it so that the program segmentation faults when repeating the simulation...
-    //QSimFree(&qsim);
+    QSimFree(&qsim);
 
     g_menuStep = kBoot;
 }

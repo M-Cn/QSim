@@ -8,7 +8,7 @@ typedef enum DirectiveType
 {
     kDirTypeNone,
     kDirTypeNumQBit,
-    kDirTypeInititalState,
+    kDirTypeInititalStateDef,
     kDirTypeGateDef,
     kDirTypeCircuitDef,
     kDirTypeNum

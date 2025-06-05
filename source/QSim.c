@@ -38,7 +38,10 @@ void QSimFree(QSim* self)
     ComplexVectorFree(&self->m_finalState);
 
     for (size_t i = 0; i < self->m_numGates; i++)
-        ComplexMatrixFree(&self->m_gateList[i]); 
+        ComplexMatrixFree(&self->m_gateList[i]);
+
+    self->m_numGates = 0;
+    self->m_numQBits = 0;
 }
 
 void QSimRun(QSim* self)

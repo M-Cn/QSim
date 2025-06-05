@@ -150,7 +150,7 @@ void SplitCircuitString(const char* input, char tokenList[][TOKEN_LEN], int* pNu
 /// @brief Translates the input complex number string into an actual complex number.
 /// @param str The input complex string.
 /// @return The output complex number.
-Complex GetComplexFromString(const char* str)
+Complex CreateComplexFromString(const char* str)
 {
     Complex num = CreateComplex(0, 0);
 
@@ -189,7 +189,7 @@ Complex GetComplexFromString(const char* str)
 /// @param self The input directive.
 /// @param numQBits The number of quantum bits.
 /// @return The quantum state object.
-QuantumState GetQuantumStateFromDirective(const QDirective* self, const int numQBits)
+QuantumState CreateQuantumStateDefFromDirective(const QDirective* self, const int numQBits)
 {
     const int size = 1 << numQBits;
     QuantumState state = CreateComplexVector(size);
@@ -199,7 +199,7 @@ QuantumState GetQuantumStateFromDirective(const QDirective* self, const int numQ
 
     for (size_t i = 0; i < size; i++)
     {        
-        Complex num = GetComplexFromString(tokenList[i]);
+        Complex num = CreateComplexFromString(tokenList[i]);
 
         ComplexVectorSetElement(&state, i, num);
     }
@@ -212,7 +212,7 @@ QuantumState GetQuantumStateFromDirective(const QDirective* self, const int numQ
 /// @param pName A pointer to where to store the gate's name.
 /// @param numQBits The number of quantum bits.
 /// @return The quantum gate object.
-QuantumGate GetQuantumGateDefFromDirective(const QDirective* self, char pName[][MAX_INPUT], const int numQBits)
+QuantumGate CreateQuantumGateDefFromDirective(const QDirective* self, char pName[][MAX_INPUT], const int numQBits)
 {
     const int size = 1 << numQBits;
     QuantumGate gate = CreateComplexMatrix(size);
@@ -229,7 +229,7 @@ QuantumGate GetQuantumGateDefFromDirective(const QDirective* self, char pName[][
     {
         for (size_t col = 0; col < size; col++)
         {
-            Complex num = GetComplexFromString(tokenList[listIdx++]);
+            Complex num = CreateComplexFromString(tokenList[listIdx++]);
             
             ComplexMatrixSetElement(&gate, row, col, num);
         }     
@@ -242,7 +242,7 @@ QuantumGate GetQuantumGateDefFromDirective(const QDirective* self, char pName[][
 /// @param self The input directive.
 /// @param pQSim The simulation object in which the circuit exists.
 /// @return The circuit definition object.
-QuantumCircuitDef GetCircuitDefFromDirective(const QDirective* self, QSim* pQSim)
+QuantumCircuitDef CreateCircuitDefFromDirective(const QDirective* self, QSim* pQSim)
 {
     QuantumCircuitDef circuitDef;
     circuitDef.m_numGates = 0;
@@ -285,9 +285,9 @@ void HandleNumQBitsDirective(QSim* pQSim, QDirective directive)
 
 void HandleInitialStateDirective(QSim* pQSim, QDirective directive)
 {
-    ASSERT_DIR_TYPE_MISMATCH(kDirTypeInititalState, directive.m_type);
+    ASSERT_DIR_TYPE_MISMATCH(kDirTypeInititalStateDef, directive.m_type);
 
-    pQSim->m_initialState = GetQuantumStateFromDirective(&directive, pQSim->m_numQBits);
+    pQSim->m_initialState = CreateQuantumStateDefFromDirective(&directive, pQSim->m_numQBits);
 }
 
 void HandleGateDefDirective(QSim* pQSim, QDirective directive)
@@ -296,7 +296,7 @@ void HandleGateDefDirective(QSim* pQSim, QDirective directive)
 
     const int lastGateID = pQSim->m_numGates;
 
-    pQSim->m_gateList[lastGateID] = GetQuantumGateDefFromDirective(&directive, &pQSim->m_gateNames[lastGateID], pQSim->m_numQBits);
+    pQSim->m_gateList[lastGateID] = CreateQuantumGateDefFromDirective(&directive, &pQSim->m_gateNames[lastGateID], pQSim->m_numQBits);
 
     pQSim->m_numGates++;
 }
@@ -305,5 +305,5 @@ void HandleCircuitDefDirective(QSim* pQSim, QDirective directive)
 {
     ASSERT_DIR_TYPE_MISMATCH(kDirTypeCircuitDef, directive.m_type);
 
-    pQSim->m_circuitDef = GetCircuitDefFromDirective(&directive, pQSim);
+    pQSim->m_circuitDef = CreateCircuitDefFromDirective(&directive, pQSim);
 }

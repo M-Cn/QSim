@@ -8,7 +8,7 @@
 DirectiveType GetDirTypeFromInputString(const char* str)
 {
     if (strcmp(str, "qubits") == 0) return kDirTypeNumQBit;
-    else if (strcmp(str, "init") == 0) return kDirTypeInititalState;
+    else if (strcmp(str, "init") == 0) return kDirTypeInititalStateDef;
     else if (strcmp(str, "define") == 0) return kDirTypeGateDef;
     else if (strcmp(str, "circ") == 0) return kDirTypeCircuitDef;
     else return kDirTypeNone;
@@ -33,12 +33,11 @@ const char* GetDirTypeName(DirectiveType type)
 {
     switch (type)
     {
-        case kDirTypeNone:           return "None";
-        case kDirTypeNumQBit:        return "NumQBit";
-        case kDirTypeInititalState:  return "InitialState";
-        case kDirTypeGateDef:        return "GateDef";
-        case kDirTypeCircuitDef:     return "CircuitDef";
-        case kDirTypeNum:            return "Num";
-        default:                     return "Unknown";
+        case kDirTypeNone:              return "None";
+        case kDirTypeNumQBit:           return "NumQBit";
+        case kDirTypeInititalStateDef:  return "InitialStateDef";
+        case kDirTypeGateDef:           return "GateDef";
+        case kDirTypeCircuitDef:        return "CircuitDef";
+        default:                        return "Unknown";
     }
 }
