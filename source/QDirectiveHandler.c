@@ -90,7 +90,7 @@ void SplitVectorString(const char* input, char parts[][TOKEN_LEN], int* count)
         (*count)++;
         p += offset;
         
-        // If we find a comma, we skip ahead
+        // If we find a comma, skip ahead
         if (*p == ',') p++;
         else break;
     }
@@ -138,7 +138,7 @@ void SplitCircuitString(const char* input, char tokenList[][TOKEN_LEN], int* pNu
     while (token != NULL)
     {
         strncpy(tokenList[*pNumGates], token, TOKEN_LEN - 1);
-        tokenList[*pNumGates][TOKEN_LEN - 1] = 0; //Make sure it's null terminated
+        tokenList[*pNumGates][TOKEN_LEN - 1] = '\0'; //Make sure it's null terminated
 
         *pNumGates += 1;
         token = strtok(NULL, " ");
