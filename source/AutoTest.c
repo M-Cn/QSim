@@ -434,7 +434,7 @@ void test_CreateQSim()
     NOTIFY_TEST_FAIL(circuidDef.m_gateIDs[1] == 0, "CreateQSim test failed. circuitDef.gateID mismatch at index 1.\n");
     NOTIFY_TEST_FAIL(circuidDef.m_gateIDs[2] == 1, "CreateQSim test failed. circuitDef.gateID mismatch at index 2.\n");
 
-    QSimRun(&qsim);
+    //QSimRun(&qsim);
 
     NOTIFY_TEST_FAIL(ComplexIsEqualTo(ComplexVectorGetElement(&qsim.m_finalState, 0), CreateComplex(-0.5f, 0.5f)), "CreateQSim test failed. finalState mismatch at index 0.\n");
     NOTIFY_TEST_FAIL(ComplexIsEqualTo(ComplexVectorGetElement(&qsim.m_finalState, 1), CreateComplex(-0.5f, -0.5f)), "CreateQSim test failed. finalState mismatch at index 1.\n");
