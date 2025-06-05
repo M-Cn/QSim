@@ -22,4 +22,6 @@ typedef struct QDirective
 
 QDirective CreateQDirective(const char* str);
 
+const char* GetDirTypeName(DirectiveType type);
+
 #endif

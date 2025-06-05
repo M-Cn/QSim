@@ -1,9 +1,18 @@
-#include "../include/Error.h"
+#include <string.h>
+#include "../include/Debug.h"
 #include "../include/QDirectiveHandler.h"
 #include "../include/Math/Complex.h"
 #include "../include/QSim.h"
 
 #define TOKEN_LEN 256
+
+DirectiveHandlerFn g_directiveHandlers[] = {
+    HandleNoneDirective,
+    HandleNumQBitsDirective,
+    HandleInitialStateDirective,
+    HandleGateDefDirective,
+    HandleCircuitDefDirective
+};
 
 void RemoveInputDelimiter(char* buffer)
 {
@@ -69,12 +78,12 @@ void CreateComplexMatrixStrList(const char* input, char tokenList[][TOKEN_LEN])
     int numChrRead = 0;
     int currentTokenIdx = 0;
 
-    while (sscanf(buffer, "(%[^)]) %n", tmp, &numChrRead) != EOF)
+    while (sscanf(buffer, "(%[^ ] %n", tmp, &numChrRead) != EOF)
     {
         char vectorStr[TOKEN_LEN];
         strncpy(vectorStr, tmp, TOKEN_LEN - 1);
         vectorStr[TOKEN_LEN - 1] = '\0'; //Make sure it's null terminated
-        
+                
         SplitCommaSeparatedComplex(vectorStr, tokenList, &currentTokenIdx);
 
         buffer += numChrRead;
@@ -93,7 +102,7 @@ void CreateCircuitStrList(const char* input, char tokenList[][TOKEN_LEN], int* p
         strncpy(tokenList[*pNumGates], token, TOKEN_LEN - 1);
         tokenList[*pNumGates][TOKEN_LEN - 1] = 0; //Make sure it's null terminated
 
-        *pNumGates++;
+        *pNumGates += 1;
         token = strtok(NULL, " ");
     }
 
@@ -151,13 +160,16 @@ QuantumState GetQuantumStateFromDirective(QDirective* self, const int numQBits)
     {        
         Complex num = GetComplexFromString(tokenList[i]);
 
+    #ifdef _DEBUG
+        ComplexPrint(num);
+    #endif
         ComplexVectorSetElement(&state, i, num);
     }
     
     return state;
 }
 
-void GetQuantumGateDefFromDirective(const QDirective* self, QuantumGate* pQuantumGate, const char** pName, const int numQBits)
+void GetQuantumGateDefFromDirective(const QDirective* self, QuantumGate* pQuantumGate, char pName[][MAX_INPUT], const int numQBits)
 {
     const int size = 1 << numQBits;
     QuantumGate gate = CreateComplexMatrix(size);
@@ -176,11 +188,12 @@ void GetQuantumGateDefFromDirective(const QDirective* self, QuantumGate* pQuantu
         {
             Complex num = GetComplexFromString(tokenList[listIdx++]);
             
+        #ifdef _DEBUG
+            ComplexPrint(num);
+        #endif
             ComplexMatrixSetElement(&gate, row, col, num);
         }     
     }
-    
-    return gate;
 }
 
 QuantumCircuitDef GetCircuitDefFromDirective(const QDirective* self, QSim* pQSim)
@@ -193,7 +206,7 @@ QuantumCircuitDef GetCircuitDefFromDirective(const QDirective* self, QSim* pQSim
 
     for (size_t i = 0; i < circuitDef.m_numGates; i++)
     {
-        QuantumGate* pGate = GetGateByName(pQSim, tokenList[i]);
+        const QuantumGate* pGate = GetGateByName(pQSim, tokenList[i]);
 
         if (pGate != NULL) circuitDef.m_gates[i] = *pGate;
     }
@@ -203,6 +216,8 @@ QuantumCircuitDef GetCircuitDefFromDirective(const QDirective* self, QSim* pQSim
 
 void HandleDirective(QSim* pQSim, QDirective directive)
 {
+    DEBUG_OUTPUT("Handling QDirective=(%s, %s)\n", GetDirTypeName(directive.m_type), directive.m_value);
+
     if (directive.m_type < kDirTypeNum)
         return g_directiveHandlers[directive.m_type](pQSim, directive);
     
@@ -232,7 +247,7 @@ void HandleGateDefDirective(QSim* pQSim, QDirective directive)
 {
     ASSERT_MSG(directive.m_type == kDirTypeGateDef, "Mismatching directive type!");
 
-    RegisterQuantumGateFromDirective(&directive, &pQSim->m_gateList[pQSim->m_numGates], &pQSim->m_gateNames[pQSim->m_numGates], pQSim->m_numQBits);
+    GetQuantumGateDefFromDirective(&directive, &pQSim->m_gateList[pQSim->m_numGates], &pQSim->m_gateNames[pQSim->m_numGates], pQSim->m_numQBits);
 
     pQSim->m_numGates++;
 }

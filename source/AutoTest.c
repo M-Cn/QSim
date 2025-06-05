@@ -2,11 +2,11 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "../include/utils.h"
-#include "../include/Error.h"
-#include "../include/Properties/Property.h"
+#include "../include/Debug.h"
 #include "../include/Math/Complex.h"
 #include "../include/Math/ComplexVector.h"
 #include "../include/Math/ComplexMatrix.h"
+#include "../include/QSim.h"
 
 #define NOTIFY_TEST_FAIL(cond, msg) \
     do { \
@@ -414,6 +414,16 @@ void test_ComplexMatrixMultiply()
     PRINT_SUCCESS("ComplexMatrixMultiply test passed!\n");
 }
 
+void test_CreateQSim()
+{
+    QSim qsim = CreateQSim("input/init.txt", "input/circ.txt");
+
+    NOTIFY_TEST_FAIL(qsim.m_numQBits == 1, "CreateQSim test failed. numQbits mismatch.");
+    NOTIFY_TEST_FAIL(qsim.m_numGates == 3, "CreateQSim test failed. numGates mismatch.");
+
+    PRINT_SUCCESS("CreateQSim test passed!\n");
+}
+
 int main() 
 {
     printf("--------Complex tests--------\n");
@@ -445,6 +455,10 @@ int main()
     test_SetGetComplexMatrixElement();
     test_ComplexMatrixDot();
     test_ComplexMatrixMultiply();
+
+    printf("--------QSim tests--------\n");
+
+    test_CreateQSim();
 
     return 0;
 }

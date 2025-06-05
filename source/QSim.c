@@ -6,7 +6,7 @@
 #include "../include/QDirectiveHandler.h"
 #include "../include/Math/Complex.h"
 
-void Initialize(QSim* self, const char* filename)
+void LoadDirectiveFile(QSim* self, const char* filename)
 {
     FILE* pFile = fopen(filename, "r");
     char line[MAX_INPUT];
@@ -21,16 +21,17 @@ void Initialize(QSim* self, const char* filename)
     fclose(pFile);
 }
 
-QSim CreateQSim(const char* filename)
+QSim CreateQSim(const char* initStateFilename, const char* circFileName)
 {
     QSim qsim;
 
-    Initialize(&qsim, filename);
+    LoadDirectiveFile(&qsim, initStateFilename);
+    LoadDirectiveFile(&qsim, circFileName);
 
     return qsim;
 }
 
-QuantumGate* GetGateByName(const QSim* self, const char* name)
+const QuantumGate* GetGateByName(const QSim* self, const char* name)
 {
     for (size_t i = 0; i < self->m_numGates; i++)
         if (strcmp(self->m_gateNames[i], name) == 0) return &self->m_gateList[i];

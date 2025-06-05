@@ -1,8 +1,6 @@
 #ifndef COMPLEX_VECTOR_H
 #define COMPLEX_VECTOR_H
 
-#define MAX_SIZE 100
-
 #include <stdlib.h>
 
 typedef struct Complex Complex;

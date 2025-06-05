@@ -1,12 +1,10 @@
 #include <stdio.h>
 #include "../../include/Math/ComplexMatrix.h"
 #include "../../include/Math/Complex.h"
-#include "../../include/Error.h"
+#include "../../include/Debug.h"
 
 ComplexMatrix CreateComplexMatrix(const size_t size)
-{
-    ASSERT_MSG(size < MAX_SIZE, "Exceeding maximum ComplexMatrix size\n");
-    
+{    
     ComplexMatrix ret;
     ret.m_size = size;
     ret.m_data = (Complex**)calloc(size, sizeof(Complex*));

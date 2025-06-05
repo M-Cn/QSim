@@ -1,7 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "../include/Error.h"
+#include "../include/Debug.h"
 #include "../include/QuantumState.h"
 #include "../include/QuantumGate.h"
 #include "../include/Math/Complex.h"

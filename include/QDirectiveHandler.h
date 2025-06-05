@@ -21,12 +21,4 @@ void HandleInitialStateDirective(QSim* pQSim, QDirective directive);
 void HandleGateDefDirective(QSim* pQSim, QDirective directive);
 void HandleCircuitDefDirective(QSim* pQSim, QDirective directive);
 
-DirectiveHandlerFn g_directiveHandlers[] = {
-    HandleNoneDirective,
-    HandleNumQBitsDirective,
-    HandleInitialStateDirective,
-    HandleGateDefDirective,
-    HandleCircuitDefDirective
-};
-
 #endif

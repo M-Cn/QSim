@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <math.h>
-#include "../../include/Error.h"
+#include "../../include/Debug.h"
 #include "../../include/Math/ComplexVector.h"
 #include "../../include/Math/ComplexMatrix.h"
 #include "../../include/Math/Complex.h"
