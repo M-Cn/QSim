@@ -2,8 +2,6 @@
 
 **QSim** is a quantum bit circuit simulator written in ANSI C.
 
----
-
 ## Project Structure
 
 ### Input Files
@@ -40,13 +38,11 @@ Each `.c` file mirrors its corresponding `.h` file in the `include/` directory a
 ### Entrypoints
 
 - `main.c` — Entry point for the main `qsim` simulator.
-- `autotest.c` — Entry point for the `autotest` test runner.
+- `AutoTest.c` — Entry point for the `autotest` test runner.
 
 ### Other Files
 
 - `Makefile` — Contains build targets and settings for different build configurations.
-
----
 
 ## Building
 
