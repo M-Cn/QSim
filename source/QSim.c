@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <limits.h>
 #include <string.h>
+#include "../include/Debug.h"
 #include "../include/QSim.h"
 #include "../include/QDirective.h"
 #include "../include/QDirectiveHandler.h"
@@ -31,8 +32,32 @@ QSim CreateQSim(const char* initStateFilename, const char* circFileName)
     return qsim;
 }
 
-void RunQSim(QSim* self)
-{    
+void QSimFree(QSim* self)
+{
+    ComplexVectorFree(&self->m_initialState);
+    ComplexVectorFree(&self->m_finalState);
+
+    for (size_t i = 0; i < self->m_numGates; i++)
+        ComplexMatrixFree(&self->m_gateList[i]);    
+}
+
+void QSimRun(QSim* self)
+{
+    QuantumState state = self->m_initialState;
+
+    for (size_t i = 0; i < self->m_circuitDef.m_numGates; i++)
+    {
+        const int gateID = self->m_circuitDef.m_gateIDs[i];
+
+        if (gateID != -1)
+        {
+            QuantumGate gate = self->m_gateList[gateID];
+
+            state = ComplexVectorTransform(state, gate);
+        }
+    }
+    
+    self->m_finalState = state;
 }
 
 const QuantumGate* GetGateByName(const QSim* self, const char* name)

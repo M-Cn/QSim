@@ -16,11 +16,11 @@
     #define DEBUG_OUTPUT(...)
 #endif
 
-#define ASSERT_MSG(cond, msg) \
+#define ASSERT_MSG(cond, fmt, ...) \
     do { \
         if (!(cond)) \
         { \
-            PRINT_FAILURE("%s\n", msg); \
+            PRINT_FAILURE(fmt, ##__VA_ARGS__); \
             fflush(stderr); \
             assert(cond); \
         } \

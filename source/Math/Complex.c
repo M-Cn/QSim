@@ -79,6 +79,6 @@ bool ComplexIsEqualTo(const Complex in1, const Complex in2)
 
 void ComplexPrint(const Complex in)
 {
-    if (in.m_im < 0.f) printf("(%.3lf - %.3lfi)\n", in.m_re, -in.m_im);
-    else printf("(%.3lf + %.3lfi)\n", in.m_re, in.m_im);
+    if (in.m_im < 0.f) printf("(%.3lf - %.3lfi)", in.m_re, -in.m_im);
+    else printf("(%.3lf + %.3lfi)", in.m_re, in.m_im);
 }

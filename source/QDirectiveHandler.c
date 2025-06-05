@@ -4,7 +4,10 @@
 #include "../include/Math/Complex.h"
 #include "../include/QSim.h"
 
-#define TOKEN_LEN 256
+#define TOKEN_LEN MAX_INPUT
+
+#define ASSERT_DIR_TYPE_MISMATCH(EXPECTED, ACTUAL) \
+ASSERT_MSG(EXPECTED == ACTUAL, "Mismatching directive type! (expecting %s, got %s)\n", GetDirTypeName(EXPECTED), GetDirTypeName(ACTUAL))
 
 DirectiveHandlerFn g_directiveHandlers[] = {
     HandleNoneDirective,
@@ -23,6 +26,18 @@ void RemoveInputDelimiter(char* buffer)
     // Remove trailing ']'
     size_t len = strlen(buffer);
     if (len > 0 && buffer[len - 1] == ']')
+        buffer[len - 1] = '\0';
+}
+
+void RemoveVectorDelimiter(char* buffer)
+{
+    // Remove leading '('
+    if (buffer[0] == '(')
+        memmove(buffer, buffer + 1, strlen(buffer));
+
+    // Remove trailing ')'
+    size_t len = strlen(buffer);
+    if (len > 0 && buffer[len - 1] == ')')
         buffer[len - 1] = '\0';
 }
 
@@ -74,16 +89,22 @@ void CreateComplexMatrixStrList(const char* input, char tokenList[][TOKEN_LEN])
     
     RemoveInputDelimiter(buffer);
 
+    DEBUG_OUTPUT("buffer: %s\n", buffer);
+
     char tmp[256];
     int numChrRead = 0;
     int currentTokenIdx = 0;
 
-    while (sscanf(buffer, "(%[^ ] %n", tmp, &numChrRead) != EOF)
+    while (sscanf(buffer, "%[^ ] %n", tmp, &numChrRead) != EOF)
     {
+        RemoveVectorDelimiter(tmp);
+
         char vectorStr[TOKEN_LEN];
         strncpy(vectorStr, tmp, TOKEN_LEN - 1);
         vectorStr[TOKEN_LEN - 1] = '\0'; //Make sure it's null terminated
-                
+        
+        DEBUG_OUTPUT("vectorStr: %s\n", vectorStr);
+
         SplitCommaSeparatedComplex(vectorStr, tokenList, &currentTokenIdx);
 
         buffer += numChrRead;
@@ -115,35 +136,31 @@ Complex GetComplexFromString(const char* str)
 
     if (sscanf(str, "%lf+i%lf", &num.m_re, &num.m_im) == 2) 
     {
-        return num;
     }
     else if (sscanf(str, "%lf-i%lf", &num.m_re, &num.m_im) == 2) 
     {
         num.m_im = -num.m_im;
-        return num;
     }
     else if (sscanf(str, "%lf", &num.m_re) == 1) 
     {
         num.m_im = 0.0;
-        return num;
     }
     else if (sscanf(str, "i%lf", &num.m_im) == 1) 
     {
         num.m_re = 0.0;
-        return num;
     }
     else if (strcmp(str, "i") == 0) 
     {
         num.m_re = 0.0;
         num.m_im = 1.0;
-        return num;
     }
     else if (strcmp(str, "-i") == 0) 
     {
         num.m_re = 0.0;
         num.m_im = -1.0;
-        return num;
     }
+
+    DEBUG_OUTPUT("Generated complex (%.3lf, %.3lf) from input %s\n", num.m_re, num.m_im, str);
 
     return num;
 }
@@ -166,7 +183,7 @@ QuantumState GetQuantumStateFromDirective(const QDirective* self, const int numQ
     return state;
 }
 
-void GetQuantumGateDefFromDirective(const QDirective* self, QuantumGate* pQuantumGate, char pName[][MAX_INPUT], const int numQBits)
+QuantumGate GetQuantumGateDefFromDirective(const QDirective* self, char pName[][MAX_INPUT], const int numQBits)
 {
     const int size = 1 << numQBits;
     QuantumGate gate = CreateComplexMatrix(size);
@@ -188,6 +205,8 @@ void GetQuantumGateDefFromDirective(const QDirective* self, QuantumGate* pQuantu
             ComplexMatrixSetElement(&gate, row, col, num);
         }     
     }
+
+    return gate;
 }
 
 QuantumCircuitDef GetCircuitDefFromDirective(const QDirective* self, QSim* pQSim)
@@ -224,35 +243,37 @@ void HandleDirective(QSim* pQSim, QDirective directive)
 
 void HandleNoneDirective(QSim* pQSim, QDirective directive)
 {
-    ASSERT_MSG(directive.m_type == kDirTypeNone, "Mismatching directive type!");
+    ASSERT_DIR_TYPE_MISMATCH(kDirTypeNone, directive.m_type);
 }
 
 void HandleNumQBitsDirective(QSim* pQSim, QDirective directive)
 {
-    ASSERT_MSG(directive.m_type == kDirTypeNumQBit, "Mismatching directive type!");
+    ASSERT_DIR_TYPE_MISMATCH(kDirTypeNumQBit, directive.m_type);
 
     pQSim->m_numQBits = atoi(directive.m_value);
 }
 
 void HandleInitialStateDirective(QSim* pQSim, QDirective directive)
 {
-    ASSERT_MSG(directive.m_type == kDirTypeInititalState, "Mismatching directive type!");
+    ASSERT_DIR_TYPE_MISMATCH(kDirTypeInititalState, directive.m_type);
 
     pQSim->m_initialState = GetQuantumStateFromDirective(&directive, pQSim->m_numQBits);
 }
 
 void HandleGateDefDirective(QSim* pQSim, QDirective directive)
 {
-    ASSERT_MSG(directive.m_type == kDirTypeGateDef, "Mismatching directive type!");
+    ASSERT_DIR_TYPE_MISMATCH(kDirTypeGateDef, directive.m_type);
 
-    GetQuantumGateDefFromDirective(&directive, &pQSim->m_gateList[pQSim->m_numGates], &pQSim->m_gateNames[pQSim->m_numGates], pQSim->m_numQBits);
+    const int lastGateID = pQSim->m_numGates;
+
+    pQSim->m_gateList[lastGateID] = GetQuantumGateDefFromDirective(&directive, &pQSim->m_gateNames[lastGateID], pQSim->m_numQBits);
 
     pQSim->m_numGates++;
 }
 
 void HandleCircuitDefDirective(QSim* pQSim, QDirective directive)
 {
-    ASSERT_MSG(directive.m_type == kDirTypeCircuitDef, "Mismatching directive type!");
+    ASSERT_DIR_TYPE_MISMATCH(kDirTypeCircuitDef, directive.m_type);
 
     pQSim->m_circuitDef = GetCircuitDefFromDirective(&directive, pQSim);
 }

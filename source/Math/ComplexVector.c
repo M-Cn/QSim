@@ -23,7 +23,7 @@ ComplexVector CreateComplexVector(const size_t size)
 
 void ComplexVectorFree(ComplexVector* self)
 {
-    if ((self == NULL) || (self->m_data == NULL)) PANIC("Attempting to free unallocated memory for ComplexVector\n");
+    if ((self == NULL) || (self->m_data == NULL)) { THROW_ERROR("Attempting to free unallocated memory for ComplexVector\n"); return; }
     
     free(self->m_data);
 
@@ -52,7 +52,7 @@ Complex ComplexVectorGetElement(const ComplexVector* self, const size_t idx)
 
 ComplexVector ComplexVectorAdd(const ComplexVector in1, const ComplexVector in2)
 {
-    ASSERT_MSG(in1.m_size == in2.m_size, "Attempting to add two ComplexVector objects with different sizes\n");
+    ASSERT_MSG(in1.m_size == in2.m_size, "Attempting to perform arithmetics between two ComplexVector objects with different sizes! (in1.size=%zu, in2.size=%zu)\n", in1.m_size, in2.m_size);
     
     ComplexVector result = CreateComplexVector(in1.m_size);
 
@@ -69,7 +69,7 @@ ComplexVector ComplexVectorAdd(const ComplexVector in1, const ComplexVector in2)
 
 ComplexVector ComplexVectorSubtract(const ComplexVector in1, const ComplexVector in2)
 {
-    ASSERT_MSG(in1.m_size == in2.m_size, "Attempting to subtract two ComplexVector objects with different sizes\n");
+    ASSERT_MSG(in1.m_size == in2.m_size, "Attempting to perform arithmetics between two ComplexVector objects with different sizes! (in1.size=%zu, in2.size=%zu)\n", in1.m_size, in2.m_size);
     
     ComplexVector result = CreateComplexVector(in1.m_size);
 
@@ -99,7 +99,7 @@ ComplexVector ComplexVectorScalarMultiply(const ComplexVector in, const Complex 
 
 Complex ComplexVectorDotProduct(const ComplexVector in1, const ComplexVector in2)
 {
-    ASSERT_MSG(in1.m_size == in2.m_size, "Attempting to scalarly multiply two ComplexVector objects with different sizes\n");
+    ASSERT_MSG(in1.m_size == in2.m_size, "Attempting to perform arithmetics between two ComplexVector objects with different sizes! (in1.size=%zu, in2.size=%zu)\n", in1.m_size, in2.m_size);
 
     Complex result = CreateComplex(0.f, 0.f);
     
@@ -134,7 +134,7 @@ double ComplexVectorMagnitude(const ComplexVector in)
 
 ComplexVector ComplexVectorTransform(ComplexVector in, ComplexMatrix transform)
 {
-    ASSERT_MSG(in.m_size == transform.m_size, "Attempting to transform a complex vector with a matrix of mismatching size!\n");
+    ASSERT_MSG(in.m_size == transform.m_size, "Attempting to transform a complex vector with a matrix of mismatching size! (vector.size=%zu, transform.size=%zu)\n", in.m_size, transform.m_size);
 
     const size_t size = in.m_size;
 

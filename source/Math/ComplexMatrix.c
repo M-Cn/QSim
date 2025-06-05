@@ -26,7 +26,7 @@ ComplexMatrix CreateComplexMatrix(const size_t size)
 
 void ComplexMatrixFree(ComplexMatrix* self)
 {
-    if ((self == NULL) || (self->m_data) == NULL) THROW_ERROR("Attempting to free unallocated memory for ComplexMatrix\n"); return;
+    if ((self == NULL) || (self->m_data) == NULL) { THROW_ERROR("Attempting to free unallocated memory for ComplexMatrix\n"); return; }
 
     for (size_t i = 0; i < self->m_size; i++)
         free(self->m_data[i]);
