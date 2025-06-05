@@ -152,33 +152,14 @@ void SplitCircuitString(const char* input, char tokenList[][TOKEN_LEN], int* pNu
 /// @return The output complex number.
 Complex CreateComplexFromString(const char* str)
 {
-    Complex num = CreateComplex(0, 0);
+    Complex num = CreateComplex(0.f, 0.f);
 
-    if (sscanf(str, "%lf+i%lf", &num.m_re, &num.m_im) == 2) 
-    {
-    }
-    else if (sscanf(str, "%lf-i%lf", &num.m_re, &num.m_im) == 2) 
-    {
-        num.m_im = -num.m_im;
-    }
-    else if (sscanf(str, "%lf", &num.m_re) == 1) 
-    {
-        num.m_im = 0.0;
-    }
-    else if (sscanf(str, "i%lf", &num.m_im) == 1) 
-    {
-        num.m_re = 0.0;
-    }
-    else if (strcmp(str, "i") == 0) 
-    {
-        num.m_re = 0.0;
-        num.m_im = 1.0;
-    }
-    else if (strcmp(str, "-i") == 0) 
-    {
-        num.m_re = 0.0;
-        num.m_im = -1.0;
-    }
+    if (sscanf(str, "%lf+i%lf", &num.m_re, &num.m_im) == 2)         {}
+    else if (sscanf(str, "%lf-i%lf", &num.m_re, &num.m_im) == 2)    { num.m_im = -num.m_im; }
+    else if (sscanf(str, "%lf", &num.m_re) == 1)                    { num.m_im = 0.0; }
+    else if (sscanf(str, "i%lf", &num.m_im) == 1)                   { num.m_re = 0.0; }
+    else if (strcmp(str, "i") == 0)                                 { num.m_im = 1.0; }
+    else if (strcmp(str, "-i") == 0)                                { num.m_im = -1.0; }
 
     DEBUG_OUTPUT("Generated complex (%.3lf, %.3lf) from input %s\n", num.m_re, num.m_im, str);
 
