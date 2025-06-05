@@ -1,47 +1,86 @@
 # QSim
-Quantum bit circuit simulator written in ANSI C.
 
-## Project structure
-`esempi-input`: Input files used when running `autotest`.
+**QSim** is a quantum bit circuit simulator written in ANSI C.
 
-`input`: Input files used when running `qsim`.
+---
 
+## Project Structure
 
-`include/Math/Complex.h`: Math header for handling complex numbers.
+### Input Files
 
-`include/Math/ComplexMatrix.h`: Math header for handling complex matrices.
+- `esempi-input/` — Sample input files used by `autotest`.
+- `input/` — Input files used when running `qsim`.
 
-`include/Math/ComplexVector.h`: Math header for handling complex vectors.
+### Header Files (`include/`)
 
-`include/Debug.h`: Helper header with debugging and output related defines.
+#### Math Utilities
 
-`include/QDirective.h`: Header containing the definition of the QDirective object. QDirective is built from the input .txt files and used to define the simulator's parameters and behaviour.
+- `Math/Complex.h` — Complex number operations.
+- `Math/ComplexMatrix.h` — Complex matrix operations.
+- `Math/ComplexVector.h` — Complex vector operations.
 
-`include/QDirectiveHandler.h`: Header containing the handler functions for each QDirective object. Basically, makes QDirective talk with QSim.
+#### Core Simulation
 
-`include/QSim.h`: Header containing the simulator's core definition and parameters list.
+- `QDirective.h` — Defines the `QDirective` object, which encapsulates simulator parameters from `.txt` input files.
+- `QDirectiveHandler.h` — Functions that interpret and apply `QDirective` settings to the simulator.
+- `QSim.h` — Main definitions and configuration for the simulator.
+- `QuantumCircuitDef.h` — Defines the structure of a quantum circuit.
+- `QuantumGate.h` — Describes individual quantum gates.
+- `QuantumState.h` — Represents a quantum state.
 
-`include/QuantumCircuitDef.h`: Header containing the definition of a quantum circuit object.
+#### Utilities and Debugging
 
-`include/QuantumGate.h`: Header containing the definition of a quantum gate object.
+- `Debug.h` — Macros and tools for debugging and logging.
+- `utils.h` — General-purpose utility functions and constants.
 
-`include/QuantumState.h`: Header containing the definition of a quantum state object.
+### Source Files (`source/`)
 
-`include/utils.h`: Header containing general utility functions and defines.
+Each `.c` file mirrors its corresponding `.h` file in the `include/` directory and contains the implementation.
 
+### Entrypoints
 
-The `source` directory respects the same structure as the `include` directory. Each file contains the implementations of what's defined in the corresponding header.
+- `main.c` — Entry point for the main `qsim` simulator.
+- `autotest.c` — Entry point for the `autotest` test runner.
 
-The two extra files `main.c` and `autotest.c` contain the entry point of `qsim` and `autotest`, respecitvely.
+### Other Files
 
-`Makefile` build targets for make.
+- `Makefile` — Contains build targets and settings for different build configurations.
+
+---
 
 ## Building
-Run either `make all_release` or `make all_debug` in the terminal, depending on the configuration you wish to use.
+
+To compile the project, run one of the following commands:
+
+```bash
+make all_release   # Optimized build
+make all_debug     # Debug build with additional outputs and symbols
+```
 
 ## Running
-If you wish to run unit tests, simply run `bin/autotest`.
-If you wish to run the main program, run `bin/qsim`. A menu will pop up, allowing different actions from the user:
-* Inputting `1` will run the simulation, printing the circuit's initial and final states when done.
-* Inputting `c` will clear the console.
-* Inputting `q` will quit the program.
+
+### Running Tests
+
+To execute the automated test suite, run:
+
+```bash
+bin/autotest
+```
+
+### Running the simulator
+
+To execute the main simulator, run:
+
+```bash
+bin/qsim
+```
+
+You will be presented with an interactive menu with the following actions:
+
+```
+1 — Run the simulation. This will display the circuit's initial and final quantum states.
+
+c — Clear the console screen.
+
+q — Quit the program.
+```
