@@ -23,7 +23,7 @@ ComplexVector CreateComplexVector(const size_t size)
 
 void ComplexVectorFree(ComplexVector* self)
 {
-    if ((self == NULL) || (self->m_data == NULL)) { THROW_ERROR("Attempting to free unallocated memory for ComplexVector\n"); return; }
+    if ((self == NULL) || (self->m_data == NULL)) return;
     
     free(self->m_data);
 

@@ -84,15 +84,18 @@ void MainUpdate()
 
     QSim qsim = CreateQSim(g_initConfigFilepath, g_circConfigFilepath);
 
+    if (qsim.m_numQBits > NUM_MAX_QBITS) { THROW_ERROR("Exceeding maximum number of qbits (value=%d, max=%d)\n", qsim.m_numQBits, NUM_MAX_QBITS); goto ret; }
+    if (qsim.m_numGates > NUM_MAX_GATES) { THROW_ERROR("Exceeding maximum number of gates (value=%d, max=%d)\n", qsim.m_numGates, NUM_MAX_GATES); goto ret; }
+
     PRINT_QUANTUM_STATE_NAMED("Initial State", qsim.m_initialState);
 
     QSimRun(&qsim);
 
     PRINT_QUANTUM_STATE_NAMED("Final State", qsim.m_finalState);
 
+ret:
     QSimFree(&qsim);
 
-ret:
     g_menuStep = kBoot;
 }
 
